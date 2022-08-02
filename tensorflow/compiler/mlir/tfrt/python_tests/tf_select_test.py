@@ -31,8 +31,7 @@ cpurt = tf_cpurt.TfCpurtExecutor()
 class TfSelect(test.TestCase):
 
   def test_select_1d(self):
-    for specialize in specializations:
-      mlir_function = """
+    mlir_function = """
         func @test(%arg0: tensor<?xf32>)
                -> (tensor<?xf32>, tensor<?xi1>, tensor<?xf32>)
         {
@@ -47,6 +46,7 @@ class TfSelect(test.TestCase):
           return %0, %1, %2 : tensor<?xf32>, tensor<?xi1>, tensor<?xf32>
         }"""
 
+    for specialize in specializations:
       compiled = cpurt.compile(mlir_function, 'test', specialize)
 
       d0 = np.random.randint(1, 10)

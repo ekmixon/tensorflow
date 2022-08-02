@@ -79,7 +79,7 @@ def main(_):
   predicted_labels = layer(images)
   correct_prediction = tf.equal(tf.argmax(predicted_labels, 1), labels)
   accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-  print("Prediction accuracy after training: %s" % accuracy)
+  print(f"Prediction accuracy after training: {accuracy}")
 
 
 if __name__ == "__main__":

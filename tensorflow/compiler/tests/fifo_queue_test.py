@@ -46,7 +46,7 @@ class FIFOQueueTest(xla_test.XLATestCase):
       self.evaluate(q.enqueue([2]))
       self.evaluate(q.enqueue([3]))
       a, b, c = self.evaluate([q.dequeue(), q.dequeue(), q.dequeue()])
-      self.assertAllEqual(set([1, 2, 3]), set([a, b, c]))
+      self.assertAllEqual({1, 2, 3}, {a, b, c})
 
   def testQueuesDontShare(self):
     with self.session(), self.test_scope():
@@ -122,9 +122,9 @@ class FIFOQueueTest(xla_test.XLATestCase):
       for enqueue_op in enqueue_ops:
         enqueue_op.run()
 
-      for i in range(len(elems)):
+      for elem in elems:
         vals = self.evaluate(dequeued_t)
-        self.assertEqual([elems[i]], vals)
+        self.assertEqual([elem], vals)
 
   def testEnqueueAndBlockingDequeue(self):
     with self.session() as sess, self.test_scope():
@@ -166,9 +166,9 @@ class FIFOQueueTest(xla_test.XLATestCase):
       for enqueue_op in enqueue_ops:
         enqueue_op.run()
 
-      for i in range(len(elems)):
+      for elem in elems:
         x_val, y_val = sess.run(dequeued_t)
-        x, y = elems[i]
+        x, y = elem
         self.assertEqual([x], x_val)
         self.assertEqual([y], y_val)
 

@@ -474,16 +474,15 @@ def make_dot_dimension_numbers(
   Returns:
     A `DotDimensionNumbers` object.
   """
-  if isinstance(dimension_numbers, (list, tuple)):
-    (lhs_contract, rhs_contract), (lhs_batch, rhs_batch) = dimension_numbers
-    dot_dims_proto = DotDimensionNumbers()
-    dot_dims_proto.lhs_contracting_dimensions.extend(lhs_contract)
-    dot_dims_proto.rhs_contracting_dimensions.extend(rhs_contract)
-    dot_dims_proto.lhs_batch_dimensions.extend(lhs_batch)
-    dot_dims_proto.rhs_batch_dimensions.extend(rhs_batch)
-    return dot_dims_proto
-  else:
+  if not isinstance(dimension_numbers, (list, tuple)):
     return dimension_numbers
+  (lhs_contract, rhs_contract), (lhs_batch, rhs_batch) = dimension_numbers
+  dot_dims_proto = DotDimensionNumbers()
+  dot_dims_proto.lhs_contracting_dimensions.extend(lhs_contract)
+  dot_dims_proto.rhs_contracting_dimensions.extend(rhs_contract)
+  dot_dims_proto.lhs_batch_dimensions.extend(lhs_batch)
+  dot_dims_proto.rhs_batch_dimensions.extend(rhs_batch)
+  return dot_dims_proto
 
 
 class ConvolutionDimensionNumbers:
@@ -620,13 +619,9 @@ def _make_replica_group_proto(replica_group):
 
 def make_replica_groups(replica_groups):
   if replica_groups is None:
-    replica_groups_protos = []  # special value for XLA API
-  else:
-    replica_groups = list(replica_groups)
-    replica_groups_protos = [
-        _make_replica_group_proto(group) for group in replica_groups
-    ]
-  return replica_groups_protos
+    return []
+  replica_groups = list(replica_groups)
+  return [_make_replica_group_proto(group) for group in replica_groups]
 
 
 Traceback = _xla.Traceback

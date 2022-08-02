@@ -78,9 +78,7 @@ def ConfigsToTest():
   SAME = "SAME"
   # pylint: enable=invalid-name
   paddings = [SAME, SAME, SAME, SAME, SAME, SAME, SAME, VALID, SAME, SAME, SAME]
-  for i, f, o, s, p in zip(input_sizes, filter_sizes, out_sizes, strides,
-                           paddings):
-    yield i, f, o, s, p
+  yield from zip(input_sizes, filter_sizes, out_sizes, strides, paddings)
 
 
 def ConfigsWithDilationsToTest():
@@ -104,9 +102,8 @@ def ConfigsWithDilationsToTest():
   SAME = "SAME"
   # pylint: enable=invalid-name
   paddings = [SAME, SAME, SAME, SAME, VALID]
-  for i, f, o, s, d, p in zip(input_sizes, filter_sizes, out_sizes, strides,
-                              dilations, paddings):
-    yield i, f, o, s, d, p
+  yield from zip(input_sizes, filter_sizes, out_sizes, strides, dilations,
+                 paddings)
 
 
 def CheckGradConfigsToTest():
@@ -131,9 +128,7 @@ def CheckGradConfigsToTest():
   SAME = "SAME"
   # pylint: enable=invalid-name
   paddings = [SAME, VALID, SAME, SAME, VALID]
-  for i, f, o, s, p in zip(input_sizes, filter_sizes, out_sizes, strides,
-                           paddings):
-    yield i, f, o, s, p
+  yield from zip(input_sizes, filter_sizes, out_sizes, strides, paddings)
 
 
 class DepthwiseConv2DTest(xla_test.XLATestCase):

@@ -31,8 +31,7 @@ cpurt = tf_cpurt.TfCpurtExecutor()
 class MultipleResultsTest(test.TestCase):
 
   def test_two_results(self):
-    for specialize in specializations:
-      mlir_function = """
+    mlir_function = """
         func @test(%arg0: tensor<?xf32>) -> (tensor<?xf32>, tensor<?xf32>) {
           %0 = "tf.Const"() { value = dense<1.0> : tensor<f32> }
                : () -> tensor<f32>
@@ -43,6 +42,7 @@ class MultipleResultsTest(test.TestCase):
           return %1, %2 : tensor<?xf32>, tensor<?xf32>
         }"""
 
+    for specialize in specializations:
       compiled = cpurt.compile(mlir_function, 'test', specialize)
 
       d0 = np.random.randint(1, 10)
@@ -53,8 +53,7 @@ class MultipleResultsTest(test.TestCase):
       np.testing.assert_allclose(res1, arg0 + 2.0, atol=0.0)
 
   def test_three_results(self):
-    for specialize in specializations:
-      mlir_function = """
+    mlir_function = """
         func @test(%arg0: tensor<?xf32>) ->
             (tensor<?xf32>, tensor<?xf32>, tensor<?xf32>) {
           %0 = "tf.Const"() { value = dense<1.0> : tensor<f32> }
@@ -68,6 +67,7 @@ class MultipleResultsTest(test.TestCase):
           return %1, %2, %3 : tensor<?xf32>, tensor<?xf32>, tensor<?xf32>
         }"""
 
+    for specialize in specializations:
       compiled = cpurt.compile(mlir_function, 'test', specialize)
 
       d0 = np.random.randint(1, 10)
